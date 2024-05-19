@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:supabase/screens/signin_screen.dart';
-import 'package:supabase/theme/theme.dart';
-import 'package:supabase/widgets/custom_scaffold.dart';
+import 'package:CityGem/screens/signin_screen.dart';
+import 'package:CityGem/theme/theme.dart';
+import 'package:CityGem/widgets/custom_scaffold.dart';
+import 'package:CityGem/data_center/user_data.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,12 +13,14 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
-  //initialise controller
-
+  // Initialise controller
   final _formSignupKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool agreePersonalData = true;
 
-  Object? get password => null;
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -65,10 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       // Username
                       TextFormField(
-                        onChanged: (value) {
-                          setState(() {
-                          });
-                        },
+                        controller: _usernameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Username';
@@ -100,9 +99,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 25.0,
                       ),
 
-
                       // Email
                       TextFormField(
+                        controller: _emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -136,6 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       // Phone Number
                       TextFormField(
+                        controller: _phoneController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a phone number';
@@ -175,6 +175,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       // Password
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -239,109 +240,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 25.0,
                       ),
                       // signup button
+                      // signup button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
+                            if (_formSignupKey.currentState!.validate() && agreePersonalData) {
+                              // Vérifier si l'utilisateur existe déjà
+                              User newUser = User(
+                                username: _usernameController.text,
+                                email: _emailController.text,
+                                phoneNumber: _phoneController.text,
+                                password: _passwordController.text,
                               );
+                              bool userAdded = !userData.users.any((user) => user.email == newUser.email);
+                              if (userAdded) {
+                                userData.addUser(newUser);
+                                // Afficher un message de succès avec la liste des utilisateurs
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('User registered successfully! Current users: ${userData.toString()}'),
+                                  ),
+                                );
+                                // Optionnel : Naviguer vers l'écran de connexion ou autre
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignInScreen(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('User with this email already exists!')),
+                                );
+                              }
                             } else if (!agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please agree to the processing of personal data')),
+                                const SnackBar(content: Text('Please agree to the processing of personal data')),
                               );
                             }
                           },
                           child: const Text('Sign up'),
                         ),
                       ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      // sign up divider
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 10,
-                            ),
-                            child: Text(
-                              'Sign up with',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      // sign up social media logo
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(Icons.facebook),
-                          //Icon(Icons.twitter),
-                          Icon(Icons.g_mobiledata),
-                          Icon(Icons.apple),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      // already have an account
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Already have an account? ',
-                            style: TextStyle(
-                              color: Colors.black45,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (e) => const SignInScreen(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'Sign in',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
+
+                      // sign up
                     ],
                   ),
                 ),

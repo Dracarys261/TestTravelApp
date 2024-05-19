@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supabase/page/explore.dart';
-import 'package:supabase/page/profile.dart';
-import 'package:supabase/page/homepage.dart';
+import 'package:CityGem/page/explore.dart';
+import 'package:CityGem/page/profile.dart';
+import 'package:CityGem/page/homepage.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

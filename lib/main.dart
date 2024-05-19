@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:supabase/Screens/IntroScreen.dart';
-import 'package:supabase/Theme/theme.dart';
-import 'package:supabase/home.dart';
-import 'package:supabase/utils/constants.dart';
+import 'package:CityGem/Screens/IntroScreen.dart';
+import 'package:CityGem/Theme/theme.dart';
+import 'package:CityGem/home.dart';
+import 'package:CityGem/utils/constants.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
 

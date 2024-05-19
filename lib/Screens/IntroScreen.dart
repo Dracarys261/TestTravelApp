@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_introduction/animated_introduction.dart';
-import 'package:supabase/Screens/login_signin.dart';
-import 'package:supabase/Screens/welcome_screen.dart';
+import 'package:CityGem/Screens/login_signin.dart';
+import 'package:CityGem/Screens/welcome_screen.dart';
 
 class IntroScreen extends StatelessWidget {
   IntroScreen({super.key});

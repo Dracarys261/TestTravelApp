@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supabase/screens/signin_screen.dart';
-import 'package:supabase/screens/signup_screen.dart';
-import 'package:supabase/theme/theme.dart';
-import 'package:supabase/widgets/custom_scaffold.dart';
-import 'package:supabase/widgets/welcome_button.dart';
+import 'package:CityGem/screens/signin_screen.dart';
+import 'package:CityGem/screens/signup_screen.dart';
+import 'package:CityGem/theme/theme.dart';
+import 'package:CityGem/widgets/custom_scaffold.dart';
+import 'package:CityGem/widgets/welcome_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
