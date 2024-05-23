@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:CityGem/data_center/user_data.dart';
 
 class User {
   String username;

@@ -1,6 +1,5 @@
+import 'package:CityGem/page/explore.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
 import 'package:CityGem/page/pagedetail.dart';
 import 'package:CityGem/category/best_place.dart';
 import 'package:CityGem/category/favourites.dart';
@@ -8,7 +7,7 @@ import 'package:CityGem/category/hotel.dart';
 import 'package:CityGem/category/most_visited.dart';
 import 'package:CityGem/category/new_added.dart';
 import 'package:CityGem/category/restaurant.dart';
-
+//import 'storydetail.dart';
 
 class HomePage extends StatelessWidget {
   var category = [
@@ -19,6 +18,7 @@ class HomePage extends StatelessWidget {
     'Hotels',
     'Restaurants'
   ];
+
   final List<String> cityNames = [
     'Madagascar',
     'La Reunion',
@@ -36,6 +36,7 @@ class HomePage extends StatelessWidget {
     'Nigeria',
     'Cameroun',
   ];
+
   final List<String> starsnumber = [
     '4.5',
     '5',
@@ -49,7 +50,38 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HomePage'),
+        title: Text(
+          'HomePage',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+        elevation: 4.0,
+        leading: IconButton(
+          icon: Icon(Icons.add_box_rounded, color: Colors.white),
+          onPressed: () {
+            // Action pour l'icône de navigation
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Explore()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {
+              // Action pour le bouton de notifications
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -77,48 +109,49 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PlaceDetailPage(
-                              cityName: cityNames2[index],
+                            builder: (context) => FullScreenImage(
                               imagePath: images[index],
-                              starsNumber: starsnumber[index],
                             ),
                           ),
                         );
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(images[index]),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.topRight,
-                                child: Icon(
-                                  Icons.bookmark_border_outlined,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
+                        child: Hero(
+                          tag: images[index],
+                          child: Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(images[index]),
+                                fit: BoxFit.cover,
                               ),
-                              Spacer(),
-                              Container(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  cityNames[index],
-                                  style: TextStyle(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.topRight,
+                                  child: Icon(
+                                    Icons.bookmark_border_outlined,
                                     color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
+                                    size: 30,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Spacer(),
+                                Container(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    cityNames[index],
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -127,8 +160,6 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-
-
             SizedBox(height: 20),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -136,7 +167,7 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 child: Row(
                   children: [
-                    for(int i=0;i<6;i++)
+                    for (int i = 0; i < 6; i++)
                       InkWell(
                         onTap: () {
                           _navigateToCategoryPage(context, i);
@@ -167,83 +198,87 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-
-
-            SizedBox(height: 10.0,),
+            SizedBox(height: 10.0),
             ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 6,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context,int index){
-                  final List<String> images = [
-                    'assets/images/posts/agadir.jpeg',
-                    'assets/images/posts/new_york.jpeg',
-                    'assets/images/posts/barcelone.jpeg',
-                    'assets/images/posts/egypt.jpeg',
-                    'assets/images/posts/nigeria.jpeg',
-                    'assets/images/posts/cameroun.jpeg'
-                  ];
-                  return Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PlaceDetailPage(
-                                  cityName: cityNames2[index], // Utilisez cityNames2 pour le nom de la ville
-                                  //cityDescription: CityData.cityDescriptions[cityNames2[index]] ?? '', // Utilisez cityNames2 pour accéder à la description
-                                  imagePath: images[index],
-                                  starsNumber: starsnumber[index],
-                                ),
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 6,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                final List<String> images = [
+                  'assets/images/posts/agadir.jpeg',
+                  'assets/images/posts/new_york.jpeg',
+                  'assets/images/posts/barcelone.jpeg',
+                  'assets/images/posts/egypt.jpeg',
+                  'assets/images/posts/nigeria.jpeg',
+                  'assets/images/posts/cameroun.jpeg'
+                ];
+                return Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlaceDetailPage(
+                                cityName: cityNames2[index],
+                                imagePath: images[index],
+                                starsNumber: starsnumber[index],
                               ),
-                            );
-                          },
-                          child: Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: DecorationImage(
-                                    image: AssetImage(images[index]),
-                                    fit: BoxFit.cover,
-                                    opacity: 1,
-                                  )
-                              )
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: AssetImage(images[index]),
+                              fit: BoxFit.cover,
+                              opacity: 1,
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                cityNames2[index],
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              cityNames2[index],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
                               ),
-                              Icon(Icons.more_vert,size: 30,)
-                            ],
-                          ),
+                            ),
+                            Icon(
+                              Icons.more_vert,
+                              size: 30,
+                            )
+                          ],
                         ),
-
-
-                        SizedBox(height: 5,),
-                        Row(children: [
-                          Icon(Icons.star,
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
                             color: Colors.yellow.shade600,
                             size: 20,
                           ),
-                          Text(starsnumber[index],style: TextStyle(fontWeight: FontWeight.w500),)
-                        ],)
-                      ],
-                    ),
-                  );
-                }
+                          Text(
+                            starsnumber[index],
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              },
             )
           ],
         ),
@@ -252,8 +287,7 @@ class HomePage extends StatelessWidget {
   }
 
   void _navigateToCategoryPage(BuildContext context, int index) {
-    //logique de navigation , j'ai utiliser switch
-
+    // Logique de navigation, j'ai utilisé switch
     switch (index) {
       case 0:
         Navigator.push(
@@ -291,14 +325,47 @@ class HomePage extends StatelessWidget {
           MaterialPageRoute(builder: (context) => Restaurant()),
         );
         break;
-
-    // Hey guys, you can add another category here.....
       default:
-
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
         );
     }
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String imagePath;
+
+  const FullScreenImage({Key? key, required this.imagePath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Stack(
+          children: [
+            Hero(
+              tag: imagePath,
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Positioned(
+              top: 40,
+              right: 20,
+              child: IconButton(
+                icon: Icon(Icons.close, color: Colors.white, size: 30),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
